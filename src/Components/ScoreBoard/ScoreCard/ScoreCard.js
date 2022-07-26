@@ -1,21 +1,36 @@
 import React, { useEffect, useState } from 'react'
 import { FaAngleDown } from 'react-icons/fa'
+import { TailSpin , Hearts , Grid , Puff ,Rings , ThreeDots, Oval , Audio ,BallTriangle, Circles } from  'react-loader-spinner'
 
-function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls }) {
+function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls, batters }) {
+
+    console.log(batters);
+    console.log(TeamLineUp)
+
 
     const [dropDown, setDropDown] = useState(false)
     const [batting, setBatting] = useState(null)
     const [lineUp, setLineUp] = useState(null)
     const [fallenWicket, setFallenWickets] = useState(null)
+    const [notBat, setNotBat] = useState([])
     let arr2 = [];
-    let arr3 = [];
+
+
+    let DidNotBat = TeamLineUp?.filter((batsman) => {
+        return batters?.every((notBated) =>
+            batsman.id !== notBated.batsman.id
+        )
+    }).map((data) => {
+        return data.fullname;
+    }).join(",")
+
+
 
     let FilterTeam = score.batting.filter((score) => {
         if (Team.id === score.team_id) {
             return score
         }
     })
-
     let FilterLineUp = score.batting.filter((data) => {
         TeamLineUp.filter((team) => {
             if (team.id === data.player_id) {
@@ -23,26 +38,17 @@ function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls }) {
             }
         })
     })
-
-
     let FallOfWicket = balls.filter((fallWickets) => {
         if (fallWickets.score.is_wicket == true) {
             return fallWickets;
         }
     })
 
-    
-
-    // console.log(arr2 , "first")
-    // console.log(TeamLineUp)
-    console.log(arr3)
-
-
-
     useEffect(() => {
         setBatting(FilterTeam)
         setLineUp(arr2)
         setFallenWickets(FallOfWicket)
+        setNotBat(DidNotBat);
     }, [])
 
     function DropDown() {
@@ -56,8 +62,8 @@ function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls }) {
 
     return (
         <>
-            {score && batting && lineUp && fallenWicket &&
-                <section className="flex justify-center items-center  bg-white">
+            {(score && batting && lineUp && fallenWicket) ?
+                <section className="flex justify-center items-center  bg-white" onClick={() => DropDown()} >
                     <div className="flex flex-col w-[660px]">
                         <div className="topTitle border-b-[1px] border-b-[#e6e6e6] px-[18px] py-[15px] flex justify-between items-center gap-auto w-[100%] bg-[#fafafa] h-[50px]">
                             <div className="code">
@@ -67,12 +73,12 @@ function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls }) {
                                 <div className="runs">
                                     <p className='text-[14px] text-[#141414] font-[600] leading-5'>{run[0].score}/{run[0].wickets}</p>
                                 </div>
-                                <div className="scrollDown w-[16px] h-[16px] bg-[#ffb999] rounded-full">
-                                    <button className=' text-white flex justify-center items-center' onClick={() => DropDown()}><FaAngleDown /></button>
+                                <div className="scrollDown w-[20px] h-[20px] flex justify-center items-center bg-[#ffb999] rounded-full">
+                                    <button className=' text-white flex justify-center items-center' onClick={() => DropDown()}><FaAngleDown className={`${dropDown? "rotate-180" : ""} transition-all duration-700`} /></button>
                                 </div>
                             </div>
                         </div>
-                        <div className={`${dropDown ? 'h-[100%] ' : 'h-[0] overflow-hidden'}`}>
+                        <div className={`${dropDown ? 'max-h-[1400px]' : 'max-h-[0px] '} transition-all duration-700 overflow-hidden`}>
                             <table className="scores py-[22px] mt-[20px] w-[660px] px-[7px]">
                                 <thead className='flex items-center justify-between p-[10px] rounded-[10px] bg-[#fafafa] text-[#787878]'>
                                     <div>
@@ -100,7 +106,7 @@ function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls }) {
                                                                 `c ${data.catchstump?.fullname}`}{" "}
                                                                 {data.bowler?.fullname
                                                                     ? `b ${data.bowler?.fullname}`
-                                                                    : "notout"}</td>
+                                                                    : "Not Out"}</td>
                                                         ))}
                                                     </div>
                                                 </tr>
@@ -134,7 +140,7 @@ function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls }) {
                                     <h1 className='text-[14px] text-[#141414] tracking-[0.25px] font-[600]'>Did Not Bat</h1>
                                 </div>
                                 <div>
-                                    <p className='text-[12px] text-[rgb(120,120,120)] font-normal tracking-[0.4px] leading-snug'>Michael Bracewell, Mitchell Santner (c), Ish Sodhi, Lockie Ferguson, Jacob Duffy</p>
+                                    <p className='text-[12px] text-[rgb(120,120,120)] font-normal tracking-[0.4px] leading-snug'>{notBat}</p>
                                 </div>
                             </div>
                             <div className='p-[10px] flex justify-between items-center w-[100%]'>
@@ -216,10 +222,12 @@ function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls }) {
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
-                </section>
+                </section> :
+                <div className='w-[100%] mt-[100px] h-[200px] flex justify-center items-center'>
+                    <Oval color="blue" height={100} width={100} />
+                </div>
             }
         </>
     )

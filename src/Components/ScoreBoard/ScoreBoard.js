@@ -4,6 +4,7 @@ import { api_token2 } from '../Constants/Constants';
 import axios from 'axios';
 import { useParams } from 'react-router-dom'
 import ScoreCard from './ScoreCard/ScoreCard';
+import { TailSpin , Hearts , Grid , Puff ,Rings , ThreeDots, Oval , Audio ,BallTriangle, Circles } from  'react-loader-spinner'
 
 function ScoreBoard() {
 
@@ -20,8 +21,10 @@ function ScoreBoard() {
     const [winnerteamExtras, setWinnerTeamExtras] = useState(null);
     const [looserTeamBowler, setLooserTeamBowler] = useState(null);
     const [winnerTeamBowler, serWinnerTeamBowler] = useState(null);
-    const [winnerTeamBalls , setWinnerTeamBalls] = useState(null);
-    const [looserTeamBalls , setLooserTeamBalls] = useState(null);
+    const [winnerTeamBalls, setWinnerTeamBalls] = useState(null);
+    const [looserTeamBalls, setLooserTeamBalls] = useState(null);
+    const [winnerTeamBatting, setWinnerTeamBatting] = useState(null);
+    const [looserTeamBatting, setLooserTeamBatting] = useState(null)
 
 
 
@@ -91,15 +94,24 @@ function ScoreBoard() {
                 return bowler;
             }
         });
-        let TeamBalls = data.balls.filter((ball)=>{
-            if(data.winnerteam.id === ball.team_id){
+        let TeamBalls = data.balls.filter((ball) => {
+            if (data.winnerteam.id === ball.team_id) {
                 WinnerTeamBalls.push(ball);
-            }else {
+            } else {
                 LooserTeamBalls.push(ball);
             }
         })
-
-            // console.log(data.balls)
+        let WinnerTeamBatting = [];
+        let array = data.batting.filter((team) => {
+            if (data.winnerteam.id === team.team_id) {
+                WinnerTeamBatting.push(team);
+            }
+        })
+        let LooserTeamBatting = data.batting.filter((team) => {
+            if (data.winnerteam.id !== team.team_id) {
+                return team;
+            }
+        })
 
         const localScore = score1;
         const visitorScore = score2;
@@ -117,6 +129,8 @@ function ScoreBoard() {
         serWinnerTeamBowler(WinnerTeamBowler)
         setWinnerTeamBalls(WinnerTeamBalls);
         setLooserTeamBalls(LooserTeamBalls);
+        setWinnerTeamBatting(WinnerTeamBatting);
+        setLooserTeamBatting(LooserTeamBatting);
 
     }
 
@@ -127,7 +141,7 @@ function ScoreBoard() {
 
 
     return (
-        <>{score && localTeamID && visitorTeamID &&
+        <>{(score && localTeamID && visitorTeamID ) ?
             (<section className="ScoreBoard mt-[60px]">
                 <div className="flex justify-center items-center w-[100%]">
                     <div className="scoreHeader flex flex-col gap-[10px] text-center w-[660px] py-[20px] px-[20px]">
@@ -173,12 +187,16 @@ function ScoreBoard() {
                     </div>
                 </div>
                 <div>
-                    <ScoreCard score={score} balls={looserTeamBalls} bowler={looserTeamBowler} Team={winnerTeam} TeamLineUp={winnerTeamLineUp} extras={winnerteamExtras} run={winnerTeamRun} />
+                    <ScoreCard score={score} balls={looserTeamBalls} batters={winnerTeamBatting} bowler={looserTeamBowler} Team={winnerTeam} TeamLineUp={winnerTeamLineUp} extras={winnerteamExtras} run={winnerTeamRun} />
                 </div>
                 <div>
-                    <ScoreCard score={score} balls={winnerTeamBalls} bowler={winnerTeamBowler} Team={looserTeam} TeamLineUp={looserTeamLineUp} extras={looserteamExtras} run={looserTeamRun} />
+                    <ScoreCard score={score} balls={winnerTeamBalls} batters={looserTeamBatting} bowler={winnerTeamBowler} Team={looserTeam} TeamLineUp={looserTeamLineUp} extras={looserteamExtras} run={looserTeamRun} />
                 </div>
-            </section>)}
+            </section>) :
+                            <div className='w-[100%] mt-[100px] h-[200px] flex justify-center items-center'>
+                            <TailSpin color="blue" height={100} width={100} />
+                        </div>
+            }
         </>
     )
 }

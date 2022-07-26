@@ -3,7 +3,7 @@ import React from 'react'
 function Footer() {
     return (
         <>
-            <footer className='flex w-[100%] flex-col justify-center items-center bg-navBar-bg-color mt-[30vh]'>
+            <footer className='flex w-[100%] flex-col justify-center items-center bg-navBar-bg-color mt-[40vh]'>
                 <div className="1 w-[100%] flex justify-center items-center py-[32px]">
                     <img src="https://www.fancode.com/b9a4bc578a5a1e8c7703327bc58b108f.svg" className='w-[144px]' alt="" />
                 </div>
