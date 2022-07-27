@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import IMG from '../../images/cricket image.webp'
 import { Link } from 'react-router-dom'
 import { AiFillPlayCircle } from 'react-icons/ai'
-import { TailSpin , Puff , Oval} from  'react-loader-spinner'
+import { TailSpin, Puff, Oval } from 'react-loader-spinner'
 
 function Card({ fix }) {
 
@@ -12,9 +12,9 @@ function Card({ fix }) {
     const [loader, setLoader] = useState(null)
 
 
-    function getScore (){
-        let score1 = fix.runs.filter((sor)=>{ if (fix.localteam_id == sor.team_id) { return sor }  })
-        let score2 = fix.runs.filter((sor)=>{ if (fix.visitorteam_id == sor.team_id) { return sor }  })
+    function getScore() {
+        let score1 = fix?.runs?.filter((sor) => { if (fix.localteam_id == sor.team_id) { return sor } })
+        let score2 = fix?.runs?.filter((sor) => { if (fix.visitorteam_id == sor.team_id) { return sor } })
         setLocalTeamId(score1)
         setVisitorTeamId(score2)
     }
@@ -28,7 +28,7 @@ function Card({ fix }) {
 
     return (
         <>
-            {fixtureId ?
+            {(fixtureId && fix && localTeamId && visitorTeamId) ?
                 <Link to={`/scoreboard/${fixtureId.id}`}>
                     <div className="container cursor-pointer relative group">
                         <div className="Card relative w-[325px] h-[220px]">
@@ -82,11 +82,12 @@ function Card({ fix }) {
                             </div>
                         </div>
                     </div>
-                </Link> : 
+                </Link>
+                :
                 <div className='w-[100vw] h-[410px] flex justify-center items-center'>
                     <TailSpin color="blue" height={100} width={100} />
                 </div>
-                }
+            }
         </>
     )
 }
