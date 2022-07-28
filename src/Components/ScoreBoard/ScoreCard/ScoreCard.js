@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { FaAngleDown } from 'react-icons/fa'
-import { TailSpin , Hearts , Grid , Puff ,Rings , ThreeDots, Oval , Audio ,BallTriangle, Circles } from  'react-loader-spinner'
+import { TailSpin, Hearts, Grid, Puff, Rings, ThreeDots, Oval, Audio, BallTriangle, Circles } from 'react-loader-spinner'
+import { Link } from 'react-router-dom'
 
 function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls, batters }) {
-
-    console.log(batters);
-    console.log(TeamLineUp)
-
 
     const [dropDown, setDropDown] = useState(false)
     const [batting, setBatting] = useState(null)
@@ -44,6 +41,8 @@ function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls, batter
         }
     })
 
+    console.log(FallOfWicket)
+
     useEffect(() => {
         setBatting(FilterTeam)
         setLineUp(arr2)
@@ -74,11 +73,11 @@ function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls, batter
                                     <p className='text-[14px] text-[#141414] font-[600] leading-5'>{run[0].score}/{run[0].wickets}</p>
                                 </div>
                                 <div className="scrollDown w-[20px] h-[20px] flex justify-center items-center bg-[#ffb999] rounded-full">
-                                    <button className=' text-white flex justify-center items-center' onClick={() => DropDown()}><FaAngleDown className={`${dropDown? "rotate-180" : ""} transition-all duration-700`} /></button>
+                                    <button className=' text-white flex justify-center items-center' onClick={() => DropDown()}><FaAngleDown className={`${dropDown ? "rotate-180" : ""} transition-all duration-700`} /></button>
                                 </div>
                             </div>
                         </div>
-                        <div className={`${dropDown ? 'max-h-[1400px]' : 'max-h-[0px] '} transition-all duration-700 overflow-hidden`}>
+                        <div className={`${dropDown ? 'max-h-[2000px]' : 'max-h-[0px] '} transition-all duration-700 overflow-hidden`}>
                             <table className="scores py-[22px] mt-[20px] w-[660px] px-[7px]">
                                 <thead className='flex items-center justify-between p-[10px] rounded-[10px] bg-[#fafafa] text-[#787878]'>
                                     <div>
@@ -97,9 +96,9 @@ function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls, batter
                                         return <>
                                             <div className='flex items-center w-[660px] justify-between py-[10px] pl-[10px] pr-[10px] text-[#787878] border-b-[1px] border-b-[rgb(245,245,245)]'>
                                                 <tr className='flex flex-col  items-start'>
-                                                    <div>
+                                                    <Link to='/player'>   <div>
                                                         <td className='text-[14px] text-[#0081ff] cursor-pointer'>{data.fullname}</td>
-                                                    </div>
+                                                    </div></Link>
                                                     <div>
                                                         {batting.filter((bat) => data.id === bat.player_id)?.map((data) => (
                                                             <td className='text-[12px] text-[600] text-inherit'> {data.catchstump?.fullname &&
@@ -171,9 +170,9 @@ function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls, batter
                                             return <>
                                                 <div className='flex items-center w-[660px] justify-between py-[10px] pl-[10px] pr-[10px] text-[#787878] border-b-[1px] border-b-[rgb(245,245,245)]'>
                                                     <tr className='flex flex-col  items-start'>
-                                                        <div>
+                                                        <Link to='/player'>  <div>
                                                             <td className='text-[14px] text-[#0081ff] cursor-pointer'>{data.bowler.fullname}</td>
-                                                        </div>
+                                                        </div> </Link>
                                                     </tr>
                                                     <tr>
                                                         <div className='flex justify-center items-center '>

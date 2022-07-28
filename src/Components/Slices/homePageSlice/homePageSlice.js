@@ -3,7 +3,6 @@ import axios from "axios";
 import { api_token, base_url } from "../../Constants/Constants";
 
 
-
 const initialState = {
     isLoading: false,
     fixtures: [],
@@ -12,12 +11,11 @@ const initialState = {
 }
 export const fetchFixtures = createAsyncThunk('homePage/fetch', () => {
     const url = `${base_url}fixtures?api_token=${api_token}&include=localteam,visitorteam,runs,league,season`
-    
     try {
-        const data =  axios.get(url);
+        const data = axios.get(url);
         return data;
     } catch (error) {
-        
+        console.log(error)
     }
 });
 
@@ -29,7 +27,7 @@ const homePageSlice = createSlice({
     reducers: {
 
     },
-    extraReducers (builder)  {
+    extraReducers(builder) {
         builder
             .addCase(
                 fetchFixtures.pending, (state, action) => {
@@ -42,7 +40,6 @@ const homePageSlice = createSlice({
                     state.message = "false";
                     state.fixtures = action.payload.data.data;
                     state.isSuccess = true;
-                    console.log(state.fixtures)
                 }
             )
             .addCase(
@@ -56,8 +53,5 @@ const homePageSlice = createSlice({
 });
 
 
-// export const { getData } = homePageSlice.actions;
-// console.log(state.fixtures)
-export const data = (state) => state.fixtures;
 export default homePageSlice.reducer;
 

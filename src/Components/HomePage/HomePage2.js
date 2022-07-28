@@ -6,16 +6,14 @@ import { AiOutlineArrowRight } from 'react-icons/ai'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { TailSpin , Hearts , Grid , Puff ,Rings , ThreeDots, Oval , Audio ,BallTriangle, Circles } from  'react-loader-spinner'
 import {useSelector , useDispatch} from 'react-redux';
-import { data } from './../Slices/homePageSlice/homePageSlice'
 import {fetchFixtures} from './../Slices/homePageSlice/homePageSlice'
 
 
 function HomePage2() {
-    const fullState = useSelector(data)
-    const fixture = fullState;
+    const {fixtures } = useSelector((state) => state.homePageSlice)
+    const fixture = fixtures?.slice(2, 12);
     const dispatch = useDispatch();    
     
-    console.log(fixture , "Data")
     
     useEffect(()=>{
         dispatch(fetchFixtures());
@@ -56,14 +54,14 @@ function HomePage2() {
                         <button className='absolute top-[37%] w-[48px] z-[100] h-[48px] flex justify-center items-center left-[-2.5%] bg-white rounded-full border-none text-[#fa5000] shadow-6xl' onClick={() => prevSlide()}><AiOutlineArrowLeft size={20} /></button>
                         <Slider ref={ref} {...settings}>
                             {fixture && fixture.length > 0 && fixture.map((fix) => {
-                                // return <Card key={fix.id} fix={fix} />
+                                return <Card key={fix.id} fix={fix} />
                             })}
                         </Slider>
                     </div>
                 </div>
             </section> :
             <div className='w-[100%] mt-[100px] h-[200px] flex justify-center items-center'>
-                <ThreeDots color="blue" height={100} width={100} />
+                <Oval color="blue" height={100} width={100} />
             </div>
         }
         </>
