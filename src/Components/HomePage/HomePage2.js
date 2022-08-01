@@ -11,7 +11,7 @@ import {fetchFixtures} from './../Slices/homePageSlice/homePageSlice'
 
 function HomePage2() {
     const {fixtures } = useSelector((state) => state.homePageSlice)
-    const fixture = fixtures?.slice(2, 12);
+    const fixture = fixtures?.slice(20,29);
     const dispatch = useDispatch();    
     
     

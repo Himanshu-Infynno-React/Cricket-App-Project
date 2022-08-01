@@ -3,15 +3,14 @@ import { FaAngleDown } from 'react-icons/fa'
 import { TailSpin, Hearts, Grid, Puff, Rings, ThreeDots, Oval, Audio, BallTriangle, Circles } from 'react-loader-spinner'
 import { Link } from 'react-router-dom'
 
-function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls, batters }) {
+function ScoreCard({ score , Team , TeamLineUp , run , extras , bowler , balls , batters , slider , open  }) {
 
-    const [dropDown, setDropDown] = useState(false)
+    const [dropDown, setDropDown] = useState(open)
     const [batting, setBatting] = useState(null)
     const [lineUp, setLineUp] = useState(null)
     const [fallenWicket, setFallenWickets] = useState(null)
     const [notBat, setNotBat] = useState([])
     let arr2 = [];
-
 
     let DidNotBat = TeamLineUp?.filter((batsman) => {
         return batters?.every((notBated) =>
@@ -20,8 +19,6 @@ function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls, batter
     }).map((data) => {
         return data.fullname;
     }).join(",")
-
-
 
     let FilterTeam = score.batting.filter((score) => {
         if (Team.id === score.team_id) {
@@ -41,7 +38,6 @@ function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls, batter
         }
     })
 
-    console.log(FallOfWicket)
 
     useEffect(() => {
         setBatting(FilterTeam)
@@ -51,13 +47,15 @@ function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls, batter
     }, [])
 
     function DropDown() {
-        if (dropDown == true) {
-            setDropDown(false)
-        }
-        else {
+        if (dropDown == false) {
             setDropDown(true)
         }
+        else {
+            setDropDown(false)
+        }
     }
+
+    
 
     return (
         <>
@@ -77,7 +75,7 @@ function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls, batter
                                 </div>
                             </div>
                         </div>
-                        <div className={`${dropDown ? 'max-h-[2000px]' : 'max-h-[0px] '} transition-all duration-700 overflow-hidden`}>
+                        <div className={`${dropDown ? 'max-h-[3000px]' : 'max-h-[0px] '} transition-all duration-700 overflow-hidden`}>
                             <table className="scores py-[22px] mt-[20px] w-[660px] px-[7px]">
                                 <thead className='flex items-center justify-between p-[10px] rounded-[10px] bg-[#fafafa] text-[#787878]'>
                                     <div>
@@ -189,6 +187,7 @@ function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls, batter
                                     </tbody>
                                 </table>
                             </div>
+                            {fallenWicket && fallenWicket.length >0 && 
                             <div>
                                 <table className="scores py-[22px] mt-[20px] w-[660px] px-[7px]">
                                     <thead className='flex items-center justify-between p-[10px] rounded-[10px] bg-[#fafafa] text-[#787878]'>
@@ -220,7 +219,7 @@ function ScoreCard({ score, Team, TeamLineUp, run, extras, bowler, balls, batter
                                         })}
                                     </tbody>
                                 </table>
-                            </div>
+                            </div>}
                         </div>
                     </div>
                 </section> :

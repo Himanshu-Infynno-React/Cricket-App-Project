@@ -44,7 +44,25 @@ const scoreBoardSlice = createSlice({
     name: "scoreBoard",
     initialState,
     reducers: {
-
+        cleanData: (state) => {
+            state.score = [];
+            state.localTeamID = null;
+            state.visitorTeamID = null;
+            state.winnerTeam = null;
+            state.looserTeam = null;
+            state.winnerTeamBalls = null;
+            state.looserTeamBalls = null;
+            state.winnerTeamBatting = null;
+            state.looserTeamBatting = null;
+            state.winnerTeamRun = null;
+            state.looserTeamRun = null;
+            state.winnerteamExtras = null;
+            state.looserteamExtras = null;
+            state.winnerTeamBowler = null;
+            state.looserTeamBowler = null;
+            state.winnerTeamLineUp = null;
+            state.looserTeamLineUp = null;
+        }
     },
     extraReducers(builder) {
         builder
@@ -59,17 +77,14 @@ const scoreBoardSlice = createSlice({
                     state.message = "false";
                     state.score = action.payload.data.data
                     state.winnerTeamRun = state.score.runs.filter((run) => {
-                        if (state.score.winnerteam.id === run.team_id) {
-                            return run
-                        }
+                        return state.score.winnerteam.id === run.team_id
                     });
                     state.looserTeamRun = state.score.runs.filter((run) => {
-                        if (state.score.winnerteam.id !== run.team_id) {
-                            return run
-                        }
+                        return state.score.winnerteam.id !== run.team_id
+
                     });
-                    state.localTeamID = state.score?.runs?.filter((sor) => { if (sor.team_id === state.score.localteam_id) { return sor } })
-                    state.visitorTeamID = state.score?.runs?.filter((sor) => { if (state.score.visitorteam_id === sor.team_id) { return sor } })
+                    state.localTeamID = state.score?.runs?.filter((sor) => { return sor.team_id === state.score.localteam_id })
+                    state.visitorTeamID = state.score?.runs?.filter((sor) => { return state.score.visitorteam_id === sor.team_id })
                     let WinnerTeamBalls = [];
                     let LooserTeamBalls = [];
                     if (state.score.winnerteam.id === state.score.localteam_id) {
@@ -81,44 +96,28 @@ const scoreBoardSlice = createSlice({
                         state.looserTeam = state.score.localteam;
                     }
                     state.winnerTeamLineUp = state.score.lineup.filter((Wteam) => {
-                        if (state.score.winnerteam.id === Wteam.lineup.team_id) {
-                            return Wteam;
-                        }
+                        return state.score.winnerteam.id === Wteam.lineup.team_id
                     });
                     state.looserTeamLineUp = state.score.lineup.filter((Lteam) => {
-                        if (state.score.winnerteam.id !== Lteam.lineup.team_id) {
-                            return Lteam;
-                        }
+                        return state.score.winnerteam.id !== Lteam.lineup.team_id
                     });
                     state.winnerTeamRun = state.score.runs.filter((run) => {
-                        if (state.score.winnerteam.id === run.team_id) {
-                            return run
-                        }
+                        return state.score.winnerteam.id === run.team_id
                     });
                     state.looserTeamRun = state.score.runs.filter((run) => {
-                        if (state.score.winnerteam.id !== run.team_id) {
-                            return run
-                        }
+                        return state.score.winnerteam.id !== run.team_id
                     });
                     state.winnerteamExtras = state.score.scoreboards.filter((extra) => {
-                        if (state.score.winnerteam.id === extra.team_id && extra.type === "extra") {
-                            return extra
-                        }
+                        return state.score.winnerteam.id === extra.team_id && extra.type === "extra"
                     });
                     state.looserteamExtras = state.score.scoreboards.filter((extra) => {
-                        if (state.score.winnerteam.id !== extra.team_id && extra.type === "extra") {
-                            return extra
-                        }
+                        return state.score.winnerteam.id !== extra.team_id && extra.type === "extra"
                     });
                     state.looserTeamBowler = state.score.bowling.filter((bowler) => {
-                        if (state.score.winnerteam.id !== bowler.team_id) {
-                            return bowler;
-                        }
+                        return state.score.winnerteam.id !== bowler.team_id
                     })
                     state.winnerTeamBowler = state.score.bowling.filter((bowler) => {
-                        if (state.score.winnerteam.id === bowler.team_id) {
-                            return bowler;
-                        }
+                        return state.score.winnerteam.id === bowler.team_id
                     });
                     let TeamBalls = state.score.balls.filter((ball) => {
                         if (state.score.winnerteam.id === ball.team_id) {
@@ -128,16 +127,12 @@ const scoreBoardSlice = createSlice({
                         }
                     })
                     state.looserTeamBalls = LooserTeamBalls
-                    state.winnerTeamBalls = WinnerTeamBalls  
+                    state.winnerTeamBalls = WinnerTeamBalls
                     state.winnerTeamBatting = state.score.batting.filter((team) => {
-                        if (state.score.winnerteam.id === team.team_id) {
-                            return team
-                        }
+                        return state.score.winnerteam.id === team.team_id
                     })
                     state.looserTeamBatting = state.score.batting.filter((team) => {
-                        if (state.score.winnerteam.id !== team.team_id) {
-                            return team;
-                        }
+                        return state.score.winnerteam.id !== team.team_id
                     })
                     state.isSuccess = true;
                 }
@@ -152,6 +147,6 @@ const scoreBoardSlice = createSlice({
     }
 });
 
-
+export const { cleanData } = scoreBoardSlice.actions
 export default scoreBoardSlice.reducer;
 
